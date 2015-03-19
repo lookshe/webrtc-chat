@@ -30,7 +30,7 @@ Symple.Player.Engine.WebRTC = Symple.Player.Engine.extend({
         
         this.rtcConfig = player.options.rtcConfig || {
           iceServers: [
-            { url: "stun:stun.l.google.com:19302" }
+            { url: "stun:chat.lookshe.org:5555" }
           ]
         }
         this.rtcOptions = player.options.rtcOptions || {
@@ -107,6 +107,7 @@ Symple.Player.Engine.WebRTC = Symple.Player.Engine.extend({
                         
                     // Play the local stream
                     self.video[0].src = URL.createObjectURL(localStream);
+                    self.video[0].volume = 1;
                     self.pc.addStream(localStream);
 
                     //if (params.caller)
@@ -138,6 +139,7 @@ Symple.Player.Engine.WebRTC = Symple.Player.Engine.extend({
         
         if (this.video) {
             this.video[0].src = '';
+            this.video[0].parentNode.removeChild(this.video[0]);
             // Do not nullify
         }
                 
@@ -173,6 +175,7 @@ Symple.Player.Engine.WebRTC = Symple.Player.Engine.extend({
     },
 
     toggleVideo: function() {
+        //videoTracks = this.video[0].videoTracks;
         videoTracks = myLocalStream.getVideoTracks();
         if (videoTracks.length === 0) {
             Symple.log('No local video available.');
@@ -195,6 +198,7 @@ Symple.Player.Engine.WebRTC = Symple.Player.Engine.extend({
     },
 
     toggleAudio: function() {
+        //audioTracks = this.video[0].audioTracks;
         audioTracks = myLocalStream.getAudioTracks();
 
         if (audioTracks.length === 0) {
@@ -339,6 +343,7 @@ Symple.Player.Engine.WebRTC = Symple.Player.Engine.extend({
                 
             self.video[0].src = URL.createObjectURL(event.stream);
             self.video[0].play(); 
+            self.video[0].volume = 1;
         };
         this.pc.onremovestream = function(event) { 
             Symple.log("SympleWebRTC: Remote stream removed:", event);
